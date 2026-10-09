@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Explore five focused dashboards for campus life, climate, money, fitness and your city.">
+  <title>Northstar | Product dashboard collection</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f5f7fb;
+      --surface: #fff;
+      --ink: #17233c;
+      --muted: #64718a;
+      --line: #e4e9f1;
+      --accent: #635bdb;
+      --accent-dark: #4d45bf;
+      --shadow: 0 12px 34px rgba(30, 48, 82, .07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font: 15px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(99, 91, 219, .35);
+      outline-offset: 3px;
+    }
+    .shell { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 19px;
+      font-weight: 800;
+    }
+    .brand-name { font-size: 17px; font-weight: 750; letter-spacing: -.03em; }
+    .topbar-note { color: var(--muted); font-size: 13px; }
+    main { padding: 56px 0 68px; }
+    .hero { max-width: 730px; margin: 0 auto 34px; text-align: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 13px;
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: #27a879; content: ""; }
+    h1 { margin: 0; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; letter-spacing: -.055em; }
+    .hero-copy { max-width: 580px; margin: 16px auto 0; color: var(--muted); font-size: 16px; }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 20px;
+    }
+    .section-heading { margin: 0; font-size: 19px; letter-spacing: -.025em; }
+    .search {
+      position: relative;
+      width: min(310px, 100%);
+    }
+    .search-icon { position: absolute; top: 50%; left: 14px; color: var(--muted); transform: translateY(-50%); pointer-events: none; }
+    .search input {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px 0 40px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .search input::placeholder { color: #8b95a8; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .filter {
+      min-height: 34px;
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      transition: background .16s, color .16s, border-color .16s;
+    }
+    .filter:hover { border-color: #c5c0f4; color: var(--accent-dark); }
+    .filter[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .app-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .app-card {
+      display: flex;
+      min-height: 238px;
+      flex-direction: column;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      transition: transform .18s, box-shadow .18s, border-color .18s;
+    }
+    .app-card[hidden] { display: none; }
+    .app-card:hover { transform: translateY(-3px); border-color: #d6d2fa; box-shadow: 0 17px 38px rgba(30, 48, 82, .11); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .app-icon { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 14px; font-size: 25px; }
+    .app-type { padding: 5px 9px; border-radius: 99px; background: #f4f5fa; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .app-card h3 { margin: 17px 0 5px; font-size: 18px; letter-spacing: -.025em; }
+    .app-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .launch {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 38px;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .launch:hover { border-color: var(--accent); background: #f7f6ff; color: var(--accent-dark); }
+    .launch span { font-size: 16px; line-height: 1; }
+    .campus .app-icon { background: #eef0ff; }
+    .climate .app-icon { background: #e9f7f1; }
+    .money .app-icon { background: #fff4df; }
+    .fitness .app-icon { background: #fff0e9; }
+    .city .app-icon { background: #eaf5ff; }
+    .empty-state { grid-column: 1 / -1; padding: 38px 20px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); text-align: center; }
+    .overview {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+      margin-top: 35px;
+      padding: 23px 25px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+    .overview h2 { margin: 0 0 4px; font-size: 16px; }
+    .overview p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stats { display: flex; gap: 26px; }
+    .stat { display: grid; gap: 2px; }
+    .stat strong { font-size: 18px; letter-spacing: -.04em; }
+    .stat span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+    footer { padding: 19px 0 25px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; text-align: center; }
+    @media (max-width: 760px) {
+      .app-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .overview { grid-template-columns: 1fr; }
+      .stats { gap: 20px; }
+    }
+    @media (max-width: 520px) {
+      .shell { width: min(100% - 28px, 420px); }
+      .topbar { min-height: 64px; }
+      .topbar-note { font-size: 11px; }
+      main { padding: 42px 0 48px; }
+      .hero { margin-bottom: 28px; }
+      .hero-copy { font-size: 14px; }
+      .toolbar { align-items: stretch; flex-direction: column; gap: 11px; }
+      .search { width: 100%; }
+      .app-grid { grid-template-columns: 1fr; gap: 12px; }
+      .app-card { min-height: 218px; }
+      .overview { padding: 19px; }
+      .stats { justify-content: space-between; gap: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="brand" href="#" aria-label="Northstar home">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span class="brand-name">Northstar</span>
+    </a>
+    <span class="topbar-note">A collection of useful dashboards</span>
+  </header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">Five tools. One starting point.</p>
+      <h1 id="page-title">A clearer view of your everyday.</h1>
+      <p class="hero-copy">Choose a dashboard to explore your studies, local climate, finances, fitness, or city in one focused workspace.</p>
+    </section>
+    <section aria-labelledby="apps-title">
+      <div class="toolbar">
+        <h2 class="section-heading" id="apps-title">Explore the collection</h2>
+        <label class="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="app-search" type="search" placeholder="Search dashboards..." autocomplete="off" aria-label="Search dashboards">
+        </label>
+      </div>
+      <div class="filters" role="group" aria-label="Filter dashboards by category">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">All dashboards</button>
+        <button class="filter" type="button" data-filter="life" aria-pressed="false">Life &amp; learning</button>
+        <button class="filter" type="button" data-filter="wellbeing" aria-pressed="false">Wellbeing</button>
+        <button class="filter" type="button" data-filter="city" aria-pressed="false">City &amp; climate</button>
+      </div>
+      <div class="app-grid" id="app-grid" aria-live="polite">
+        <article class="app-card campus" data-category="life" data-search="campusiq campus education academics university students grades study attendance">
+          <div class="card-top"><span class="app-icon" aria-hidden="true">🎓</span><span class="app-type">Learning</span></div>
+          <h3>CampusIQ</h3>
+          <p>Keep track of courses, attendance, assignments, and academic goals.</p>
+          <a class="launch" href="apps/campusiq/index.html">Open CampusIQ <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="app-card climate" data-category="city" data-search="climatepulse climate weather heat risk sustainability environment">
+          <div class="card-top"><span class="app-icon" aria-hidden="true">🌍</span><span class="app-type">Climate</span></div>
+          <h3>ClimatePulse</h3>
+          <p>Explore local climate signals, heat risk, and practical ways to prepare.</p>
+          <a class="launch" href="apps/climatepulse/index.html">Open ClimatePulse <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="app-card money" data-category="life" data-search="moneypilot money finance budget spending savings transactions personal finance">
+          <div class="card-top"><span class="app-icon" aria-hidden="true">💰</span><span class="app-type">Finance</span></div>
+          <h3>MoneyPilot</h3>
+          <p>Understand spending, manage budgets, and stay close to your savings goals.</p>
+          <a class="launch" href="apps/moneypilot/index.html">Open MoneyPilot <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="app-card fitness" data-category="wellbeing" data-search="fitsense fitness workout exercise activity health wellness training">
+          <div class="card-top"><span class="app-icon" aria-hidden="true">🏃</span><span class="app-type">Fitness</span></div>
+          <h3>FitSense</h3>
+          <p>Review activity, build consistent habits, and find a workout that fits.</p>
+          <a class="launch" href="apps/fitsense/index.html">Open FitSense <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="app-card city" data-category="city" data-search="citypulse city traffic transportation congestion mobility urban">
+          <div class="card-top"><span class="app-icon" aria-hidden="true">🏙️</span><span class="app-type">City life</span></div>
+          <h3>CityPulse</h3>
+          <p>See how traffic and movement change across your city throughout the day.</p>
+          <a class="launch" href="apps/citypulse/index.html">Open CityPulse <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </section>
+    <section class="overview" aria-label="About the collection">
+      <div>
+        <h2>One collection, five perspectives</h2>
+        <p>Each dashboard is a self-contained demo, ready to open and explore.</p>
+      </div>
+      <div class="stats" aria-label="Collection highlights">
+        <div class="stat"><strong>05</strong><span>Dashboards</span></div>
+        <div class="stat"><strong>01</strong><span>Easy starting point</span></div>
+        <div class="stat"><strong>∞</strong><span>Ways to explore</span></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="shell">Northstar · A collection of interactive product demos</div></footer>
+  <script>
+    const searchInput = document.getElementById("app-search");
+    const appCards = Array.from(document.querySelectorAll(".app-card"));
+    const filterButtons = Array.from(document.querySelectorAll(".filter"));
+    const appGrid = document.getElementById("app-grid");
+    let activeFilter = "all";
+
+    function filterApps() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+      for (const card of appCards) {
+        const matchesCategory = activeFilter === "all" || card.dataset.category === activeFilter;
+        const matchesSearch = card.dataset.search.includes(query);
+        card.hidden = !matchesCategory || !matchesSearch;
+        if (!card.hidden) visibleCount++;
+      }
+      let emptyState = appGrid.querySelector(".empty-state");
+      if (visibleCount === 0 && !emptyState) {
+        emptyState = document.createElement("p");
+        emptyState.className = "empty-state";
+        emptyState.textContent = "No dashboards match that search. Try another name or category.";
+        appGrid.append(emptyState);
+      } else if (visibleCount > 0 && emptyState) {
+        emptyState.remove();
+      }
+    }
+
+    searchInput.addEventListener("input", filterApps);
+    for (const button of filterButtons) {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        for (const option of filterButtons) {
+          option.setAttribute("aria-pressed", String(option === button));
+        }
+        filterApps();
+      });
+    }
+  </script>
+</body>
+</html>
